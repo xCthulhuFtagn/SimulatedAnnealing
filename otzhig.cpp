@@ -19,16 +19,16 @@ struct point{
 };
 bool operator< (const point& l, const point& r) { return E(l.x, l.y) < E(r.x, r.y); }
 
-point otzhig(double tmin, double tmax, double k){ //tmax is starting temp in the beginning
-    double ti = tmax, xi = frand(-100, 100), yi = frand(-100, 100), _x, _y, dE;
+point otzhig(double min, double max, double k){ //tmax is starting temp in the beginning
+    double tmin = 1e-10, tmax = 1;
+    double ti = tmax, xi = frand(min, max), yi = frand(min, max), _x, _y, dE;
     set<point> dots;
-    for(int i = 0; i < s; ++i) dots.insert(point(frand(-100, 100), frand(-100, 100)));
-    double h = tmax - tmin;
+    for(int i = 0; i < s; ++i) dots.insert(point(frand(min, max), frand(min, max)));
     knuth_b rand_engine;
     uniform_real_distribution<> uniform_zero_to_one(0.0, 1.0);
     for (int i = 1; ti > tmin; ++i){
         set<point> new_dots;
-        double step = h*exp(-i);
+        double step = (max - min)*exp(-i);
         point ND;
         for(auto dot : dots){
             for(size_t j = 0; j < k; ++j){
@@ -50,6 +50,6 @@ point otzhig(double tmin, double tmax, double k){ //tmax is starting temp in the
 }
 
 int main(){
-    point ans = otzhig(1e-100, 1, 100);
-    printf("x = %f, y = %f", ans.x, ans.y);
+    point ans = otzhig(1e-10, 1, 10);
+    printf("x = %f, y = %f => D = %f", ans.x, ans.y, sqrt(ans.x*ans.x + ans.y*ans.y));
 }
